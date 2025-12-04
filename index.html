@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Btech ChaiWala</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="favicom.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+        }
+        .menu-item-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .menu-item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .active-filter {
+            background-color: #0d9488; /* Teal */
+            color: #ffffff;
+        }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out forwards;
+        }
+        .mood-btn {
+            background-color: #fde68a; /* Lighter Amber */
+            color: #44403c; /* Darker Stone */
+            padding: 10px 20px;
+            border-radius: 9999px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .mood-btn:hover {
+            background-color: #0d9488; /* Teal */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .mood-btn:focus {
+            outline: none;
+            border-color: #f59e0b; /* Amber */
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4);
+        }
+        .cart-item-enter {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-teal-700 tracking-wider">Btech ChaiWala</a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#home" class="text-stone-700 hover:text-teal-700 transition duration-300">Home</a>
+                <a href="#munch-ai" class="text-stone-700 hover:text-teal-700 transition duration-300">Munch AI</a>
+                <a href="#menu" class="text-stone-700 hover:text-teal-700 transition duration-300">Menu</a>
+                <a href="#about" class="text-stone-700 hover:text-teal-700 transition duration-300">About</a>
+                <a href="#reservations" class="text-stone-700 hover:text-teal-700 transition duration-300">Reservations</a>
+                <a href="#feedback" class="text-stone-700 hover:text-teal-700 transition duration-300">Feedback</a>
+            </div>
+            <div class="flex items-center">
+                 <button id="cart-button" class="relative text-stone-700 hover:text-teal-700 transition duration-300 mr-4">
+                    <i class="fas fa-bell-concierge text-2xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <div id="auth-container-desktop" class="hidden md:flex items-center">
+                    <button id="login-nav-btn" class="bg-teal-700 text-white font-bold py-2 px-6 rounded-full hover:bg-teal-800 transition duration-300">Login</button>
+                    <div id="logged-in-view-desktop" class="hidden items-center">
+                        <span class="mr-4 text-stone-700 font-medium">Welcome!</span>
+                        <button id="logout-btn-desktop" class="bg-amber-500 text-white font-bold py-2 px-6 rounded-full hover:bg-amber-600 transition duration-300">Logout</button>
+                    </div>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <i class="fas fa-bars text-2xl text-teal-700"></i>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#home" class="block text-stone-700 hover:text-teal-700 transition duration-300">Home</a>
+            <a href="#munch-ai" class="block text-stone-700 hover:text-teal-700 transition duration-300">Munch AI</a>
+            <a href="#menu" class="block text-stone-700 hover:text-teal-700 transition duration-300">Menu</a>
+            <a href="#about" class="block text-stone-700 hover:text-teal-700 transition duration-300">About</a>
+            <a href="#reservations" class="block text-stone-700 hover:text-teal-700 transition duration-300">Reservations</a>
+            <a href="#feedback" class="block text-stone-700 hover:text-teal-700 transition duration-300">Feedback</a>
+             <div id="auth-container-mobile" class="mt-4">
+                <button id="login-nav-btn-mobile" class="w-full bg-teal-700 text-white font-bold py-2 px-6 rounded-full hover:bg-teal-800 transition duration-300">Login</button>
+                <div id="logged-in-view-mobile" class="hidden text-center">
+                    <span class="block mb-2 text-stone-700 font-medium">Welcome!</span>
+                    <button id="logout-btn-mobile" class="w-full bg-amber-500 text-white font-bold py-2 px-6 rounded-full hover:bg-amber-600 transition duration-300">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-[60vh] md:min-h-[80vh] flex items-center bg-cover bg-center" style="background-image: url('hgg.avif');">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">A Taste of Tradition, A Sip of Serenity</h1>
+            <p class="text-lg md:text-xl text-stone-200 mb-8">Authentic flavours, freshly brewed chai, and a warm welcome.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#menu" class="bg-amber-500 text-white font-bold py-3 px-8 rounded-full hover:bg-amber-600 transition duration-300 text-lg w-full sm:w-auto">Explore Our Menu</a>
+                <a href="#reservations" class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-teal-700 transition duration-300 text-lg w-full sm:w-auto">Reserve a Table</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 md:py-24">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=600&auto=format&fit=crop" alt="The cozy interior of Btech ChaiWala" class="rounded-lg shadow-2xl w-full">
+            </div>
+            <div class="text-center md:text-left">
+                <h2 class="text-3xl md:text-4xl font-bold text-teal-700 mb-6">Our Story</h2>
+                <p class="text-stone-700 leading-relaxed mb-4">
+                    Btech ChaiWala was born from a simple idea: to create a welcoming space where people can connect, relax, and enjoy high-quality, authentic Indian flavours. We believe in the power of a good cup of masala chai to start a day, a delicious snack to brighten it, and a friendly face to make it better.
+                </p>
+                <p class="text-stone-700 leading-relaxed">
+                    Every spice we grind and every meal we prepare is crafted with love and attention to detail. We're more than just a cafe; we're a part of the community.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Barista Section -->
+    <section id="munch-ai" class="py-16 md:py-24 bg-white/50">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-teal-700 mb-4">Meet Munch AI</h2>
+            <p class="text-stone-700 mb-10 text-lg max-w-2xl mx-auto">Tell us your mood, and our smart assistant will find the perfect combo for you!</p>
+            <div id="mood-buttons" class="flex flex-wrap justify-center gap-3 md:gap-4 mb-8">
+                <button class="mood-btn" data-mood="tired and stressed">😴 Tired & Stressed</button>
+                <button class="mood-btn" data-mood="creative and inspired">🎨 Creative & Inspired</button>
+                <button class="mood-btn" data-mood="celebratory and happy">🎉 Celebratory</button>
+                <button class="mood-btn" data-mood="cozy and relaxed">🛋️ Cozy & Relaxed</button>
+            </div>
+            <div id="ai-recommendation-container" class="mt-8 max-w-2xl mx-auto min-h-[150px] p-4">
+                <!-- AI recommendation will be displayed here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-teal-700 mb-12">Our Menu</h2>
+            
+            <!-- Search Bar -->
+            <div class="max-w-xl mx-auto mb-10">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-stone-500">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="menu-search-input" placeholder="Search for an item..." class="w-full py-3 pl-12 pr-4 text-stone-700 bg-stone-100 border-2 border-transparent rounded-full focus:outline-none focus:border-teal-500 focus:bg-white transition-colors">
+                </div>
+            </div>
+
+            <!-- Menu Filters -->
+            <div id="menu-filters" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-10">
+                <button class="menu-filter-btn active-filter" data-filter="all">All</button>
+                <button class="menu-filter-btn" data-filter="coffee">Coffee</button>
+                <button class="menu-filter-btn" data-filter="tea">Tea & Chai</button>
+                <button class="menu-filter-btn" data-filter="pastries">Snacks</button>
+                <button class="menu-filter-btn" data-filter="sandwiches">Sandwiches</button>
+            </div>
+            <!-- Menu Grid -->
+            <div id="menu-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Menu items will be injected here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section id="reservations" class="py-16 md:py-24">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-lg shadow-xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-teal-700 mb-8">Reserve Your Table</h2>
+                <form id="reservation-form">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="mb-6">
+                            <label for="res-name" class="block text-stone-700 font-medium mb-2">Name</label>
+                            <input type="text" id="res-name" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="res-phone" class="block text-stone-700 font-medium mb-2">Phone</label>
+                            <input type="tel" id="res-phone" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                        </div>
+                         <div class="mb-6">
+                            <label for="res-guests" class="block text-stone-700 font-medium mb-2">Number of Guests</label>
+                            <input type="number" id="res-guests" min="1" max="10" value="2" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="res-date" class="block text-stone-700 font-medium mb-2">Date</label>
+                            <input type="date" id="res-date" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                        </div>
+                    </div>
+                     <div class="mb-6">
+                        <label for="res-time" class="block text-stone-700 font-medium mb-2">Time</label>
+                        <input type="time" id="res-time" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-teal-700 text-white font-bold py-3 px-10 rounded-full hover:bg-teal-800 transition duration-300 text-lg">Book My Table</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Feedback Section -->
+    <section id="feedback" class="py-16 md:py-24 bg-white/50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-lg shadow-xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-teal-700 mb-8">We'd Love to Hear From You</h2>
+                <form id="feedback-form">
+                    <div class="mb-6">
+                        <label for="name" class="block text-stone-700 font-medium mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="email" class="block text-stone-700 font-medium mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block text-stone-700 font-medium mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-teal-700 text-white font-bold py-3 px-10 rounded-full hover:bg-teal-800 transition duration-300 text-lg">Submit Feedback</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 hidden z-[70]">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center relative animate-fade-in">
+            <button id="close-login-modal-btn" class="absolute top-4 right-4 text-stone-500 hover:text-stone-800 transition-colors"><i class="fas fa-times text-2xl"></i></button>
+            <h2 class="text-3xl font-bold text-teal-700 mb-8">Welcome Back</h2>
+            <form id="login-form">
+                <div class="mb-6 text-left">
+                    <label for="login-email" class="block text-stone-700 font-medium mb-2">Email</label>
+                    <input type="email" id="login-email" name="email" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                </div>
+                <div class="mb-6 text-left">
+                    <label for="login-password" class="block text-stone-700 font-medium mb-2">Password</label>
+                    <input type="password" id="login-password" name="password" class="w-full px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="w-full bg-teal-700 text-white font-bold py-3 px-10 rounded-full hover:bg-teal-800 transition duration-300 text-lg">Login</button>
+                </div>
+            </form>
+            <p class="text-stone-600 mt-6">Don't have an account? <a href="#" class="text-teal-700 font-semibold hover:underline">Sign Up</a></p>
+        </div>
+    </div>
+    
+    <!-- Reservation Success Modal -->
+    <div id="reservation-success-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 hidden z-[60]">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center">
+            <div class="text-green-500 text-5xl mb-4"><i class="fas fa-check-circle"></i></div>
+            <h3 class="text-2xl font-bold text-stone-800 mb-2">Table Booked!</h3>
+            <p class="text-stone-600 mb-6">Your reservation has been confirmed. We look forward to seeing you!</p>
+            <button id="close-reservation-modal-btn" class="bg-teal-700 text-white font-bold py-2 px-6 rounded-full hover:bg-teal-800 transition duration-300">Close</button>
+        </div>
+    </div>
+
+    <!-- Feedback Success Message Modal -->
+    <div id="feedback-success-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 hidden z-[60]">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center">
+            <div class="text-green-500 text-5xl mb-4"><i class="fas fa-check-circle"></i></div>
+            <h3 class="text-2xl font-bold text-stone-800 mb-2">Dhanyavad!</h3>
+            <p class="text-stone-600 mb-6">Your feedback has been submitted successfully.</p>
+            <button id="close-feedback-modal-btn" class="bg-teal-700 text-white font-bold py-2 px-6 rounded-full hover:bg-teal-800 transition duration-300">Close</button>
+        </div>
+    </div>
+    
+    <!-- Order Success Message Modal -->
+    <div id="order-success-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 hidden z-[60]">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center">
+            <div class="text-green-500 text-5xl mb-4"><i class="fas fa-check-circle"></i></div>
+            <h3 class="text-2xl font-bold text-stone-800 mb-2">Order Placed!</h3>
+            <p class="text-stone-600 mb-6">Your order has been received. Please pay at the counter. Your order number is <strong id="order-number"></strong>.</p>
+            <button id="close-order-modal-btn" class="bg-teal-700 text-white font-bold py-2 px-6 rounded-full hover:bg-teal-800 transition duration-300">Close</button>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/60 hidden z-50 flex justify-end">
+        <div id="cart-panel" class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out">
+            <!-- Cart Header -->
+            <div class="flex justify-between items-center p-6 border-b">
+                <h2 class="text-2xl font-bold text-teal-700">Your Order</h2>
+                <button id="close-cart-btn" class="text-stone-500 hover:text-stone-800"><i class="fas fa-times text-2xl"></i></button>
+            </div>
+            <!-- Cart Body -->
+            <div id="cart-items" class="flex-grow p-6 overflow-y-auto">
+                <!-- Cart items will be injected here -->
+            </div>
+            <!-- Cart Footer -->
+            <div class="p-6 border-t bg-stone-50">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-medium text-stone-800">Total:</span>
+                    <span id="cart-total" class="text-2xl font-bold text-teal-700">₹0</span>
+                </div>
+                <button id="place-order-btn" class="w-full bg-amber-500 text-white font-bold py-3 rounded-lg hover:bg-amber-600 transition duration-300 text-lg disabled:bg-stone-400">Place Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-teal-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-xl font-semibold mb-4">Btech ChaiWala</p>
+            <p class="mb-6">123 Saffron Street, Jaipur, RJ 302001</p>
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="text-white hover:text-stone-300 text-2xl"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white hover:text-stone-300 text-2xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white hover:text-stone-300 text-2xl"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p class="text-sm text-stone-400">&copy; <span id="year"></span> Btech ChaiWala. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Mobile Menu Toggle ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // --- Close mobile menu on link click ---
+            const navLinks = document.querySelectorAll('#mobile-menu a, header nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetId = link.getAttribute('href');
+                    if(targetId && targetId.startsWith('#') && targetId.length > 1) {
+                         mobileMenu.classList.add('hidden');
+                         document.querySelector(targetId).scrollIntoView({
+                             behavior: 'smooth'
+                         });
+                    }
+                });
+            });
+
+            // --- Dynamic Year for Footer ---
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // --- Menu Data (Updated for Indian Theme) ---
+            const menuItems = [
+                { id: 1, name: 'Masala Chai', price: 120, category: 'tea', image: 'https://images.unsplash.com/photo-1594226343099-194340578633?q=80&w=600&auto=format&fit=crop' },
+                { id: 2, name: 'Filter Coffee', price: 150, category: 'coffee', image: 'https://images.unsplash.com/photo-1628178887719-410a56614ae4?q=80&w=600&auto=format&fit=crop' },
+                { id: 3, name: 'Cappuccino', price: 180, category: 'coffee', image: 'https://images.unsplash.com/photo-1572442388858-85b20a3b3634?q=80&w=600&auto=format&fit=crop' },
+                { id: 4, name: 'Darjeeling Tea', price: 140, category: 'tea', image: 'https://images.unsplash.com/photo-1627889412037-8568b20a59ce?q=80&w=600&auto=format&fit=crop' },
+                { id: 5, name: 'Samosa (2 Pcs)', price: 100, category: 'pastries', image: 'https://images.unsplash.com/photo-1601050690594-7375485bce9b?q=80&w=600&auto=format&fit=crop' },
+                { id: 6, name: 'Khaman Dhokla', price: 130, category: 'pastries', image: 'https://images.unsplash.com/photo-1668665632922-a61a29a3e218?q=80&w=600&auto=format&fit=crop' },
+                { id: 7, name: 'Vada Pav', price: 90, category: 'pastries', image: 'https://images.unsplash.com/photo-1625698302196-7b56023be679?q=80&w=600&auto=format&fit=crop' },
+                { id: 8, name: 'Chocolate Lava Cake', price: 190, category: 'pastries', image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?q=80&w=600&auto=format&fit=crop' },
+                { id: 9, name: 'Red Velvet Pastry', price: 160, category: 'pastries', image: 'https://images.unsplash.com/photo-1616012480654-7503d09a2444?q=80&w=600&auto=format&fit=crop' },
+                { id: 10, name: 'Choco-Chip Muffin', price: 140, category: 'pastries', image: 'https://images.unsplash.com/photo-1599785209707-a456fc1337bb?q=80&w=600&auto=format&fit=crop' },
+                { id: 11, name: 'Paneer Tikka Sandwich', price: 250, category: 'sandwiches', image: 'https://images.unsplash.com/photo-1643217431445-ac8a3a259b52?q=80&w=600&auto=format&fit=crop' },
+                { id: 12, name: 'Bombay Veg Sandwich', price: 220, category: 'sandwiches', image: 'https://images.unsplash.com/photo-1592415486698-028d2a231184?q=80&w=600&auto=format&fit=crop' }
+            ];
+
+            const menuGrid = document.getElementById('menu-grid');
+            const filterButtons = document.querySelectorAll('.menu-filter-btn');
+            const searchInput = document.getElementById('menu-search-input');
+
+            // --- Function to Render Menu Items based on filters and search ---
+            const updateDisplayedMenu = () => {
+                const activeCategory = document.querySelector('.menu-filter-btn.active-filter').dataset.filter;
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                
+                // 1. Filter by category
+                let filteredItems = menuItems;
+                if (activeCategory !== 'all') {
+                    filteredItems = menuItems.filter(item => item.category === activeCategory);
+                }
+
+                // 2. Filter by search term
+                if (searchTerm) {
+                    filteredItems = filteredItems.filter(item => item.name.toLowerCase().includes(searchTerm));
+                }
+
+                menuGrid.innerHTML = ''; // Clear existing items
+
+                if (filteredItems.length === 0) {
+                     menuGrid.innerHTML = `<p class="text-center text-stone-600 col-span-full text-lg">No items match your search.</p>`;
+                     return;
+                }
+
+                filteredItems.forEach(item => {
+                    const menuItemElement = document.createElement('div');
+                    menuItemElement.className = 'menu-item-card bg-white rounded-lg shadow-lg overflow-hidden flex flex-col';
+                    menuItemElement.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-48 object-cover">
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-stone-800 mb-2">${item.name}</h3>
+                                <p class="text-lg font-semibold text-teal-700">₹${item.price}</p>
+                            </div>
+                            <button class="add-to-cart-btn mt-4 bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-800 transition duration-300" data-id="${item.id}">Add to Cart</button>
+                        </div>
+                    `;
+                    menuGrid.appendChild(menuItemElement);
+                });
+                
+                // Add event listeners to newly created buttons
+                document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const id = parseInt(e.target.dataset.id);
+                        const itemToAdd = menuItems.find(item => item.id === id);
+                        addToCart(itemToAdd);
+                    });
+                });
+            };
+
+            // --- Menu Filter & Search Logic ---
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active-filter'));
+                    button.classList.add('active-filter');
+                    updateDisplayedMenu();
+                });
+            });
+            
+            searchInput.addEventListener('input', updateDisplayedMenu);
+
+            const styleFilterButtons = () => {
+                filterButtons.forEach(button => {
+                   button.classList.add(
+                       'px-4', 'py-2', 'rounded-full', 'font-medium', 'transition', 'duration-300', 
+                       'border', 'border-transparent', 'hover:bg-teal-800', 'hover:text-white', 'focus:outline-none',
+                       'focus:ring-2', 'focus:ring-offset-2', 'focus:ring-amber-500'
+                   );
+                   if (!button.classList.contains('active-filter')) {
+                       button.classList.add('bg-stone-200', 'text-stone-700');
+                   }
+                });
+            };
+            
+            styleFilterButtons();
+            updateDisplayedMenu(); // Initial render
+            
+            // --- Shopping Cart Logic ---
+            let cart = [];
+            const cartButton = document.getElementById('cart-button');
+            const cartModal = document.getElementById('cart-modal');
+            const cartPanel = document.getElementById('cart-panel');
+            const closeCartBtn = document.getElementById('close-cart-btn');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCountEl = document.getElementById('cart-count');
+            const cartTotalEl = document.getElementById('cart-total');
+            const placeOrderBtn = document.getElementById('place-order-btn');
+
+            function addToCart(item) {
+                const existingItem = cart.find(cartItem => cartItem.id === item.id);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cart.push({ ...item, quantity: 1 });
+                }
+                updateCartUI();
+            }
+
+            function updateCartUI() {
+                // Update cart items display
+                cartItemsContainer.innerHTML = '';
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = `<p class="text-stone-500 text-center mt-8">Your cart is empty.</p>`;
+                    placeOrderBtn.disabled = true;
+                } else {
+                    placeOrderBtn.disabled = false;
+                    cart.forEach(item => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'flex justify-between items-center mb-4 pb-4 border-b cart-item-enter';
+                        itemEl.innerHTML = `
+                            <div class="flex items-center">
+                                <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-md object-cover mr-4">
+                                <div>
+                                    <p class="font-semibold text-stone-800">${item.name}</p>
+                                    <p class="text-stone-600">₹${item.price}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="quantity-btn text-lg" data-id="${item.id}" data-action="decrease">-</button>
+                                <span class="mx-3 font-medium">${item.quantity}</span>
+                                <button class="quantity-btn text-lg" data-id="${item.id}" data-action="increase">+</button>
+                                <button class="remove-btn ml-4 text-red-500 hover:text-red-700" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `;
+                        cartItemsContainer.appendChild(itemEl);
+                    });
+                }
+
+                // Update total count
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCountEl.textContent = totalItems;
+                
+                // Update total price
+                const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                cartTotalEl.textContent = `₹${totalPrice}`;
+            }
+
+            cartItemsContainer.addEventListener('click', (e) => {
+                const target = e.target.closest('.quantity-btn, .remove-btn');
+                if (!target) return;
+                
+                const id = parseInt(target.dataset.id);
+                const itemInCart = cart.find(item => item.id === id);
+
+                if (target.classList.contains('quantity-btn')) {
+                    const action = target.dataset.action;
+                    if (action === 'increase') {
+                        itemInCart.quantity++;
+                    } else if (action === 'decrease') {
+                        itemInCart.quantity--;
+                        if (itemInCart.quantity === 0) {
+                            cart = cart.filter(item => item.id !== id);
+                        }
+                    }
+                } else if (target.classList.contains('remove-btn')) {
+                     cart = cart.filter(item => item.id !== id);
+                }
+                updateCartUI();
+            });
+
+            function openCart() {
+                cartModal.classList.remove('hidden');
+                setTimeout(() => cartPanel.classList.remove('translate-x-full'), 10);
+            }
+
+            function closeCart() {
+                cartPanel.classList.add('translate-x-full');
+                setTimeout(() => cartModal.classList.add('hidden'), 300);
+            }
+            
+            cartButton.addEventListener('click', openCart);
+            closeCartBtn.addEventListener('click', closeCart);
+            cartModal.addEventListener('click', (e) => {
+                if(e.target === cartModal) closeCart();
+            });
+            
+            // --- AI Barista Logic ---
+            const moodButtons = document.querySelectorAll('.mood-btn');
+            const recommendationContainer = document.getElementById('ai-recommendation-container');
+            const apiKey = ""; // API key is handled by the environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            async function callGeminiAPI(prompt, retries = 3, delay = 1000) {
+                try {
+                    const payload = {
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: "OBJECT",
+                                properties: {
+                                    "drink": {
+                                        "type": "OBJECT",
+                                        "properties": { "name": { "type": "STRING" }, "price": { "type": "STRING" } }
+                                    },
+                                    "food": {
+                                        "type": "OBJECT",
+                                        "properties": { "name": { "type": "STRING" }, "price": { "type": "STRING" } }
+                                    },
+                                    "reason": { "type": "STRING" }
+                                },
+                            }
+                        }
+                    };
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
+                    const result = await response.json();
+                    const candidate = result.candidates?.[0];
+                    if (candidate && candidate.content?.parts?.[0]?.text) {
+                        return candidate.content.parts[0].text;
+                    } else {
+                        throw new Error('Invalid response structure from API');
+                    }
+                } catch (error) {
+                    console.error(`Error calling Gemini API (attempt ${4 - retries}):`, error);
+                    if (retries > 0) {
+                        await new Promise(res => setTimeout(res, delay));
+                        return callGeminiAPI(prompt, retries - 1, delay * 2);
+                    } else {
+                        return null;
+                    }
+                }
+            }
+
+            moodButtons.forEach(button => {
+                button.addEventListener('click', async () => {
+                    const mood = button.dataset.mood;
+                    recommendationContainer.innerHTML = `<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700"></div></div>`;
+                    recommendationContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    const menuAsJsonString = JSON.stringify(menuItems.map(item => ({ name: item.name, category: item.category, price: item.price })));
+                    const prompt = `You are Munch AI, a friendly and witty food recommendation AI for "Btech ChaiWala", an Indian-themed cafe. A customer feels ${mood}. Based on the following menu, recommend one drink and one food item that would be a perfect pairing. Current date is ${new Date().toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' })} in India. Provide a short, cheerful reason for your choice. Menu: ${menuAsJsonString}. Respond with only a single, valid JSON object with keys "drink", "food", and "reason". The "drink" and "food" values should be objects containing the "name" and "price" from the menu. Do not include any markdown formatting.`;
+
+                    const responseText = await callGeminiAPI(prompt);
+                    if (responseText) {
+                        try {
+                            const recommendation = JSON.parse(responseText);
+                            displayRecommendation(recommendation);
+                        } catch (e) {
+                            console.error("Failed to parse AI response:", e, responseText);
+                            displayError("Munch AI is a bit busy. Please try again in a moment.");
+                        }
+                    } else {
+                        displayError("Munch AI seems to be on a coffee break. Please try again later.");
+                    }
+                });
+            });
+
+            function displayRecommendation(rec) {
+                if (!rec.drink?.name || !rec.food?.name || !rec.reason) {
+                    displayError("Munch AI gave a confusing order. Please try again.");
+                    return;
+                }
+                recommendationContainer.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow-xl border-2 border-amber-500/50 animate-fade-in">
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">Your Perfect Pairing:</h3>
+                        <div class="grid md:grid-cols-2 gap-6 text-left">
+                            <div class="bg-stone-100 p-4 rounded-lg border">
+                                <p class="font-semibold text-lg text-stone-800">${rec.drink.name}</p>
+                                <p class="text-stone-600">₹${rec.drink.price}</p>
+                            </div>
+                            <div class="bg-stone-100 p-4 rounded-lg border">
+                                <p class="font-semibold text-lg text-stone-800">${rec.food.name}</p>
+
+                                <p class="text-stone-600">₹${rec.food.price}</p>
+                            </div>
+                        </div>
+                        <p class="text-stone-700 mt-6 italic">"${rec.reason}"</p>
+                    </div>`;
+            }
+
+            function displayError(message) {
+                 recommendationContainer.innerHTML = `<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg animate-fade-in" role="alert">
+                    <strong class="font-bold">Oops!</strong>
+                    <span class="block sm:inline"> ${message}</span>
+                </div>`;
+            }
+
+            // --- Feedback Form Submission ---
+            const feedbackForm = document.getElementById('feedback-form');
+            const feedbackSuccessModal = document.getElementById('feedback-success-modal');
+            const closeFeedbackModalBtn = document.getElementById('close-feedback-modal-btn');
+
+            feedbackForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                console.log({ name: this.name.value, email: this.email.value, message: this.message.value });
+                feedbackSuccessModal.classList.remove('hidden');
+                this.reset();
+            });
+
+            closeFeedbackModalBtn.addEventListener('click', () => { feedbackSuccessModal.classList.add('hidden'); });
+            feedbackSuccessModal.addEventListener('click', (e) => { if (e.target === feedbackSuccessModal) feedbackSuccessModal.classList.add('hidden'); });
+            
+            // --- Reservation Form Submission ---
+            const reservationForm = document.getElementById('reservation-form');
+            const reservationSuccessModal = document.getElementById('reservation-success-modal');
+            const closeReservationModalBtn = document.getElementById('close-reservation-modal-btn');
+            const resDateInput = document.getElementById('res-date');
+            
+            // Set min date for reservation to today
+            const today = new Date().toISOString().split('T')[0];
+            resDateInput.setAttribute('min', today);
+
+
+            reservationForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                reservationSuccessModal.classList.remove('hidden');
+                this.reset();
+            });
+
+            closeReservationModalBtn.addEventListener('click', () => { reservationSuccessModal.classList.add('hidden'); });
+            reservationSuccessModal.addEventListener('click', (e) => { if (e.target === reservationSuccessModal) reservationSuccessModal.classList.add('hidden'); });
+
+
+             // --- Order Placement ---
+            const orderSuccessModal = document.getElementById('order-success-modal');
+            const closeOrderModalBtn = document.getElementById('close-order-modal-btn');
+            const orderNumberEl = document.getElementById('order-number');
+
+            placeOrderBtn.addEventListener('click', () => {
+                if (cart.length === 0) return;
+                
+                // Generate a random order number
+                orderNumberEl.textContent = Math.floor(Math.random() * 90000) + 10000;
+                
+                closeCart();
+                orderSuccessModal.classList.remove('hidden');
+                
+                // Clear cart
+                cart = [];
+                updateCartUI();
+            });
+
+            closeOrderModalBtn.addEventListener('click', () => { orderSuccessModal.classList.add('hidden'); });
+            orderSuccessModal.addEventListener('click', (e) => { if (e.target === orderSuccessModal) orderSuccessModal.classList.add('hidden'); });
+
+            // --- Login Modal Logic ---
+            const loginModal = document.getElementById('login-modal');
+            const loginNavBtn = document.getElementById('login-nav-btn');
+            const loginNavBtnMobile = document.getElementById('login-nav-btn-mobile');
+            const closeLoginModalBtn = document.getElementById('close-login-modal-btn');
+            const loginForm = document.getElementById('login-form');
+            
+            const loggedInViewDesktop = document.getElementById('logged-in-view-desktop');
+            const logoutBtnDesktop = document.getElementById('logout-btn-desktop');
+            
+            const loggedInViewMobile = document.getElementById('logged-in-view-mobile');
+            const logoutBtnMobile = document.getElementById('logout-btn-mobile');
+            
+            function openLoginModal() {
+                loginModal.classList.remove('hidden');
+            }
+            function closeLoginModal() {
+                loginModal.classList.add('hidden');
+            }
+
+            function updateLoginState(isLoggedIn) {
+                if (isLoggedIn) {
+                    loginNavBtn.classList.add('hidden');
+                    loggedInViewDesktop.classList.remove('hidden');
+                    loginNavBtnMobile.classList.add('hidden');
+                    loggedInViewMobile.classList.remove('hidden');
+                } else {
+                    loginNavBtn.classList.remove('hidden');
+                    loggedInViewDesktop.classList.add('hidden');
+                    loginNavBtnMobile.classList.remove('hidden');
+                    loggedInViewMobile.classList.add('hidden');
+                }
+            }
+
+            loginNavBtn.addEventListener('click', openLoginModal);
+            loginNavBtnMobile.addEventListener('click', openLoginModal);
+            closeLoginModalBtn.addEventListener('click', closeLoginModal);
+            loginModal.addEventListener('click', (e) => {
+                if (e.target === loginModal) closeLoginModal();
+            });
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real app, you'd verify credentials here
+                updateLoginState(true);
+                closeLoginModal();
+            });
+
+            logoutBtnDesktop.addEventListener('click', () => updateLoginState(false));
+            logoutBtnMobile.addEventListener('click', () => updateLoginState(false));
+
+        });
+    </script>
+
+</body>
+</html>
+
